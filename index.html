@@ -2,184 +2,388 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mento Community Quiz</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #137dc5, #00cfc8);
-      color: #fff;
       margin: 0;
-      padding: 20px;
+      background: linear-gradient(135deg, #0b1736, #137dc5, #00cfc8);
+      color: #EDEDED;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem 0 4rem 0;
     }
-    h1 {
-      color: #FFF74F;
+
+    /* Hero section */
+    header {
+      max-width: 760px;
+      width: 90%;
+      background: rgba(255, 255, 255, 0.07);
+      padding: 30px 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 247, 79, 0.4);
+      margin-bottom: 30px;
       text-align: center;
-      font-size: 2.8em;
-      margin-bottom: 10px;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
     }
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      box-shadow: 0 0 35px 10px #FFF74F inset;
+      animation: glow 3s infinite alternate;
+      z-index: -1;
+    }
+    @keyframes glow {
+      0% { box-shadow: 0 0 15px 5px #FFF74F inset; }
+      100% { box-shadow: 0 0 40px 15px #FFF74F inset; }
+    }
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #FFF74F;
+      text-shadow: 0 0 10px #FFF74F;
+    }
+    header p {
+      font-size: 1.15rem;
+      color: #f0f0c2;
+      margin-bottom: 20px;
+    }
+    header button {
+      background-color: #FFF74F;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 30px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 12px rgba(255, 247, 79, 0.5);
+    }
+    header button:hover {
+      background-color: #d7d00c;
+      box-shadow: 0 6px 18px rgba(215, 208, 12, 0.8);
+    }
+
+    /* Quiz container */
     .quiz-container {
       max-width: 760px;
-      margin: 0 auto;
-      background: rgba(255,255,255,0.1);
-      border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      width: 90%;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 25px 30px;
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.25);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
     }
     .question-block {
-      margin-bottom: 25px;
-      border-bottom: 1px solid rgba(255,255,255,0.3);
-      padding-bottom: 18px;
+      background: rgba(30, 40, 80, 0.85);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(21, 38, 66, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      user-select: none;
+      transition: transform 0.3s ease;
+    }
+    .question-block:hover {
+      transform: scale(1.025);
+      box-shadow: 0 0 28px 6px #FFF74F;
     }
     .question {
-      font-size: 1.2em;
+      color: #FFF74F;
       font-weight: 600;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      font-size: 1.05rem;
+      text-shadow: 0 0 5px #FFF74Faa;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     .options button {
-      display: block;
-      width: 100%;
-      margin: 8px 0;
-      padding: 10px;
+      background-color: #FFF74F;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
+      padding: 12px 8px;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.3s;
+      color: #002200;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      box-shadow: 0 3px 8px rgba(255, 247, 79, 0.6);
+      user-select: none;
     }
-    .options button:hover { background-color: #ffe145; }
-    .correct { background-color: #22c55e !important; color:#fff; }
-    .wrong { background-color: #ef4444 !important; color:#fff; }
-    .score-box {
-      margin-top: 20px;
+    .options button:hover:not(:disabled) {
+      background-color: #e0df1b;
+      box-shadow: 0 4px 15px rgba(224, 223, 27, 0.9);
+    }
+    .options button.correct {
+      background-color: #22c55e !important;
+      color: white !important;
+      box-shadow: 0 0 15px 3px #22c55e;
+    }
+    .options button.wrong {
+      background-color: #ef4444 !important;
+      color: white !important;
+      box-shadow: 0 0 15px 3px #ef4444;
+    }
+    .result {
+      margin-top: 10px;
+      font-weight: 700;
+      font-size: 1rem;
       text-align: center;
-      font-size: 1.4em;
-      background: rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 12px;
+      height: 25px;
+      user-select: none;
     }
+
+    /* Score bar */
+    .score-container {
+      max-width: 760px;
+      width: 90%;
+      margin-bottom: 40px;
+      text-align: center;
+      user-select: none;
+    }
+    .score-text {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+      color: #FFF74F;
+      text-shadow: 0 0 5px #FFF74Faa;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 28px;
+      background-color: rgba(255,255,255,0.12);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background-image: linear-gradient(90deg, #c0f689, #22c55e);
+      border-radius: 14px 0 0 14px;
+      transition: width 0.8s ease-in-out;
+    }
+
+    /* Social section */
     .socials {
-      margin: 25px auto;
-      text-align: center;
+      max-width: 760px;
+      width: 90%;
+      margin: 0 auto 40px auto;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
     }
-    .socials img {
-      width: 45px;
-      margin: 0 10px;
+    .socials a {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
-      background-color: #fff;
-      padding: 8px;
+      background: #FFF74F;
+      box-shadow: 0 0 10px #FFF74Faa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
       cursor: pointer;
-      transition: 0.3s;
     }
-    .socials img:hover { transform: scale(1.1); }
+    .socials a:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 20px #FFF74Fee;
+    }
+    .socials svg {
+      width: 26px;
+      height: 26px;
+      fill: #002200;
+    }
+
+    /* Benefits */
     .benefits {
-      max-width: 750px;
-      margin: 30px auto;
-      background: rgba(255,255,255,0.08);
-      border-radius: 10px;
-      padding: 20px;
+      max-width: 760px;
+      width: 90%;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      padding: 25px 30px;
+      box-shadow: 0 0 25px rgba(255,247,79,0.3);
+      user-select: none;
     }
     .benefits h2 {
       color: #FFF74F;
-      font-size: 1.8em;
-      margin-bottom: 12px;
+      font-size: 1.95rem;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 600;
+      text-shadow: 0 0 15px #FFF74Fcc;
     }
-    .benefits li {
-      margin-bottom: 10px;
+    .benefits ul {
+      list-style: inside disc;
+      font-size: 1.15rem;
+      color: #E9E9E9;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto;
     }
+    .benefits a {
+      color: #FFE74F;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .benefits a:hover {
+      color: #FFF74F;
+      text-decoration: underline;
+    }
+
   </style>
 </head>
 <body>
 
-  <h1>Mento Community Quiz</h1>
-  <h3 style="text-align:center;">Check your FX IQ & Join the Onchain Revolution 🌍</h3>
+<header>
+  <h1>Mento FX Quiz Challenge</h1>
+  <p>Test your [translate:knowledge of Mento stablecoins and Web3 FX ecosystem]. Earn XP & join the community!</p>
+  <button onclick="document.getElementById('quiz-container').scrollIntoView({behavior: 'smooth'})">Start Quiz</button>
+</header>
 
-  <div class="quiz-container" id="quiz-container"></div>
-
-  <div id="score-box" class="score-box">Score: 0 / 10</div>
-
-  <div class="socials">
-    <a href="https://x.com/MentoLabs" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
-    <a href="https://discord.mento.org" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord"></a>
-    <a href="https://www.linkedin.com/company/mento-labs" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn"></a>
-    <a href="https://www.instagram.com/mento_team" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram"></a>
-    <a href="https://www.youtube.com/watch?v=nexL5KgSj5k" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
-    <a href="https://www.mento.org" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/4257/4257483.png" alt="Website"></a>
+<div class="score-container" aria-label="Quiz score progress">
+  <div class="score-text" id="score-text">Correct Answers: 0 / 10</div>
+  <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" tabindex="0">
+    <div class="progress-fill" id="progress-fill"></div>
   </div>
+</div>
 
-  <div class="benefits">
-    <h2>Why Join the Mento Ecosystem?</h2>
-    <ul>
-      <li>Access transparent stablecoin reserves at <a style="color:#FFF74F;" href="https://reserve.mento.org" target="_blank">reserve.mento.org</a>.</li>
-      <li>Participate in governance and growth as an early contributor.</li>
-      <li>Build your onchain identity with your FX ID Card on Discord.</li>
-      <li>Earn ecosystem rewards through active community participation.</li>
-      <li>Be part of the open FX Layer powering multi-currency DeFi across 140+ countries.</li>
-    </ul>
-  </div>
+<section class="quiz-container" id="quiz-container" aria-live="polite" aria-atomic="true" aria-relevant="additions">
+  <!-- JS injected questions here -->
+</section>
 
-  <script>
-    const quizData = [
-      {q:"How many users are part of the Mento ecosystem?",opts:["1M+","10M+","25M+","50M+"],ans:"10M+"},
-      {q:"How many stable assets does Mento support?",opts:["5","10","15+","25+"],ans:"15+"},
-      {q:"Mento’s annualized FX volume?",opts:["$8B","$12B","$18B+","$25B+"],ans:"$18B+"},
-      {q:"Which is NOT integrated with Mento?",opts:["Chainlink","Valora","Wormhole","PayPal"],ans:"PayPal"},
-      {q:"Which blockchain powers Mento?",opts:["Ethereum","Celo","Polygon","Solana"],ans:"Celo"},
-      {q:"What is the main token for governance?",opts:["MENTO","USDT","cUSD","CELO"],ans:"MENTO"},
-      {q:"Which currency is NOT supported by Mento?",opts:["Nigeria","Brazil","India","Kenya"],ans:"India"},
-      {q:"Collateral ratio of Mento reserve?",opts:["1.0","1.5","1.8","2.0"],ans:"1.8"},
-      {q:"Which oracle provides price feeds?",opts:["Chainlink","Coinbase","Uniswap","Kraken"],ans:"Chainlink"},
-      {q:"Where to check reserve data?",opts:["mento.com/reserve","reserve.mento.org","mento.io","mento.org/data"],ans:"reserve.mento.org"}
-    ];
+<section class="socials" aria-label="[translate:Mento social media links]">
+  <a href="https://x.com/MentoLabs" target="_blank" aria-label="Mento Twitter" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M23.954 4.569c-0.885 0.392-1.83 0.656-2.825 0.775 1.013-0.61 1.794-1.574 2.163-2.724-0.949 0.555-2.005 0.959-3.127 1.184-0.897-0.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-0.205-7.719-2.172-10.148-5.144-1.29 2.213-0.669 5.108 1.523 6.574-0.806-0.026-1.566-0.247-2.229-0.616v0.061c0 2.796 1.978 5.127 4.6 5.654-0.755 0.205-1.551 0.232-2.224 0.084 0.623 1.942 2.432 3.355 4.574 3.393-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.213 7.557 2.213 9.054 0 14-7.496 14-13.986 0-0.21-0.005-0.423-0.014-0.633 0.962-0.695 1.8-1.562 2.46-2.549z"></path></svg>
+  </a>
+  <a href="https://discord.mento.org" target="_blank" aria-label="Mento Discord" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277c-3.0032 4.4629-3.3381 8.8683-2.7874 13.2876a.0824.0824 0 00.0312.0561 19.9117 19.9117 0 006.0803 3.1254.0777.0777 0 00.0842-.0276c.4706-.6304.8909-1.2952 1.248-1.9942a.074.074 0 00-.0416-.1057 12.6739 12.6739 0 01-1.826-.868.077.077 0 01-.0076-.1277c.123-.0943.246-.1923.359-.2914a.0743.0743 0 01.0776-.0105c3.8138 1.7423 8.0057 1.7423 11.7952 0a.0739.0739 0 01.0785.0095c.112.099.235.198.358.2924a.0766.0766 0 01-.006.1276 12.4328 12.4328 0 01-1.825.869.074.074 0 00-.0407.1067c.3604.698.7808 1.3628 1.252 1.9932a.076.076 0 00.0842.0286 19.9134 19.9134 0 006.0804-3.126.0822.0822 0 00.0309-.0554c.5004-5.177-.8382-9.584-3.8336-13.0417a.061.061 0 00-.0312-.028zM8.02 15.3312c-1.1825 0-2.1536-1.0857-2.1536-2.419 0-1.3332.9555-2.4189 2.1536-2.4189 1.2108 0 2.1747 1.0952 2.1535 2.4189 0 1.3333-.9554 2.419-2.1535 2.419zm7.9748 0c-1.1824 0-2.1535-1.0857-2.1535-2.419 0-1.3332.9554-2.4189 2.1535-2.4189 1.2107 0 2.1746 1.0952 2.1534 2.4189 0 1.3333-.9427 2.419-2.1534 2.419z"></path></svg>
+  </a>
+  <a href="https://www.linkedin.com/company/mento-labs" target="_blank" aria-label="Mento LinkedIn" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M4.983 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zm.023 17.5H0v-13h5v13zm7.69-11h-4.474v13h4.486v-6.872c0-1.626.31-3.213 2.443-3.212 2.14 0 2.146 1.787 2.146 3.311V20h4.485v-7.444c0-4.125-2.197-6.048-5.124-6.048-2.488 0-3.47 1.435-4.06 2.439V10z"/></svg>
+  </a>
+  <a href="https://www.instagram.com/mento_team" target="_blank" aria-label="Mento Instagram" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M7.75 2A5.75 5.75 0 0 0 2 7.75v8.5A5.75 5.75 0 0 0 7.75 22h8.5A5.75 5.75 0 0 0 22 16.25v-8.5A5.75 5.75 0 0 0 16.25 2h-8.5zM12 8.94a3.06 3.06 0 1 1 0 6.12 3.06 3.06 0 0 1 0-6.12zm5.21-1.7a1.16 1.16 0 1 1 0 2.32 1.16 1.16 0 0 1 0-2.32z"/></svg>
+  </a>
+  <a href="https://www.youtube.com/watch?v=nexL5KgSj5k" target="_blank" aria-label="Mento YouTube" rel="noopener">
+    <svg viewBox="0 0 24 24"><path d="M10 15l5.19-3L10 9v6zm2-15C6.48 0 2 4.48 2 10v4c0 5.52 4.48 10 10 10s10-4.48 10-10V10c0-5.52-4.48-10-10-10z"/></svg>
+  </a>
+  <a href="https://www.mento.org" target="_blank" aria-label="Mento Website" rel="noopener">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#FFF74F"/><text x="12" y="17" font-size="10" font-family="Arial" font-weight="bold" fill="#002200" text-anchor="middle">M</text></svg>
+  </a>
+</section>
 
-    let score = 0;
-    const container = document.getElementById('quiz-container');
-    const scoreBox = document.getElementById('score-box');
+<section class="benefits" role="region" aria-label="[translate:Mento ecosystem community benefits]">
+  <h2>Why Join the Mento Ecosystem?</h2>
+  <ul>
+    <li>Access transparent stablecoin reserves at <a href="https://reserve.mento.org" target="_blank" rel="noopener" style="color:#FFF74F;">reserve.mento.org</a>.</li>
+    <li>Participate in governance and growth as an early contributor.</li>
+    <li>Build your onchain identity with your FX ID Card on Discord.</li>
+    <li>Earn ecosystem rewards through active participation and quiz assessments.</li>
+    <li>Power the future of open FX with a global multi-currency layer spanning 140+ countries.</li>
+  </ul>
+</section>
 
-    quizData.forEach((item, i) => {
-      const block = document.createElement('div');
-      block.classList.add('question-block');
+<script>
+  // Quiz data
+  const quizData = [
+    { q:"How many users are part of the Mento ecosystem?", opts:["1M+", "10M+", "25M+", "50M+"], ans:"10M+"},
+    { q:"How many stable assets does Mento support?", opts:["5", "10", "15+", "25+"], ans:"15+"},
+    { q:"Mento’s annualized FX volume?", opts:["$8B", "$12B", "$18B+", "$25B+"], ans:"$18B+"},
+    { q:"Which is NOT integrated with Mento?", opts:["Chainlink", "Valora", "Wormhole", "PayPal"], ans:"PayPal"},
+    { q:"Which blockchain powers Mento?", opts:["Ethereum", "Celo", "Polygon", "Solana"], ans:"Celo"},
+    { q:"What is the main token for governance?", opts:["MENTO", "USDT", "cUSD", "CELO"], ans:"MENTO"},
+    { q:"Which currency is NOT supported by Mento?", opts:["Nigeria", "Brazil", "India", "Kenya"], ans:"India"},
+    { q:"Collateral ratio of Mento reserve?", opts:["1.0", "1.5", "1.8", "2.0"], ans:"1.8"},
+    { q:"Which oracle provides price feeds?", opts:["Chainlink", "Coinbase", "Uniswap", "Kraken"], ans:"Chainlink"},
+    { q:"Where to check reserve data?", opts:["mento.com/reserve", "reserve.mento.org", "mento.io", "mento.org/data"], ans:"reserve.mento.org"}
+  ];
 
-      const question = document.createElement('div');
-      question.classList.add('question');
-      question.innerText = (i+1) + ". " + item.q;
+  let score = 0;
+  const quizContainer = document.getElementById("quiz-container");
+  const scoreText = document.getElementById("score-text");
+  const progressFill = document.createElement("div");
+  let answeredQuestions = 0;
 
-      const options = document.createElement('div');
-      options.classList.add('options');
+  // Create progress fill bar in JS inside score container
+  const progressBar = document.querySelector(".progress-bar");
+  progressBar.appendChild(progressFill);
+  progressFill.classList.add("progress-fill");
+  progressFill.style.width = `0%`;
 
-      const result = document.createElement('div');
-      result.classList.add('result');
-      let answered = false;
+  function updateProgress() {
+    const progressPercent = (answeredQuestions / quizData.length) * 100;
+    progressFill.style.width = progressPercent + "%";
+    progressBar.setAttribute("aria-valuenow", answeredQuestions);
+  }
 
-      item.opts.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.innerText = opt;
-        btn.onclick = () => {
-          if(answered) return;
-          answered = true;
-          if(opt === item.ans){
-            btn.classList.add('correct');
-            result.innerText = "✅ Correct!";
-            score++;
-            scoreBox.innerText = `Score: ${score} / ${quizData.length}`;
-          } else {
-            btn.classList.add('wrong');
-            result.innerText = `❌ Wrong! Correct: ${item.ans}`;
-            Array.from(options.children).forEach(b=>{
-              if(b.innerText===item.ans) b.classList.add('correct');
-            });
-          }
-          Array.from(options.children).forEach(b=>b.disabled=true);
-        };
-        options.appendChild(btn);
-      });
+  quizData.forEach((item, idx) => {
+    const block = document.createElement("div");
+    block.classList.add("question-block");
 
-      block.appendChild(question);
-      block.appendChild(options);
-      block.appendChild(result);
-      container.appendChild(block);
+    const questionEl = document.createElement("div");
+    questionEl.classList.add("question");
+    questionEl.textContent = `${idx + 1}. ${item.q}`;
+    block.appendChild(questionEl);
+
+    const optionsEl = document.createElement("div");
+    optionsEl.className = "options";
+
+    const resultEl = document.createElement("div");
+    resultEl.className = "result";
+
+    let answered = false;
+
+    item.opts.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.textContent = opt;
+      btn.onclick = () => {
+        if (answered) return;
+        answered = true;
+        answeredQuestions++;
+
+        if (opt === item.ans) {
+          btn.classList.add("correct");
+          resultEl.textContent = "✅ Correct!";
+          score++;
+        } else {
+          btn.classList.add("wrong");
+          resultEl.textContent = `❌ Wrong! Correct: ${item.ans}`;
+          // highlight correct
+          Array.from(optionsEl.children).forEach(b => {
+            if (b.textContent === item.ans) b.classList.add("correct");
+          });
+        }
+        scoreText.textContent = `Correct Answers: ${score} / ${quizData.length}`;
+        Array.from(optionsEl.children).forEach(b => b.disabled = true);
+        updateProgress();
+      };
+      optionsEl.appendChild(btn);
     });
-  </script>
+
+    block.appendChild(optionsEl);
+    block.appendChild(resultEl);
+    quizContainer.appendChild(block);
+  });
+</script>
 </body>
 </html>
 
