@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mento Quiz with Highlighted Answers</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #137dc5, #00cfc8);
+      color: #fff;
+      margin: 0;
+      padding: 20px 10px;
+    }
+    h1 {
+      color: #FFF74F;
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 2.5em;
+    }
+    .quiz-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 25px 30px;
+      border-radius: 15px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+    .question-block {
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      padding-bottom: 20px;
+    }
+    .question {
+      font-size: 1.25em;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      background-color: #FFF74F;
+      border: none;
+      border-radius: 10px;
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .options button:hover {
+      background-color: #ffe145;
+    }
+    .options button.correct {
+      background-color: #22c55e; /* green */
+      color: white;
+    }
+    .options button.wrong {
+      background-color: #ef4444; /* red */
+      color: white;
+    }
+    .result {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Mento Community Quiz</h1>
+
+  <div class="quiz-container" id="quiz-container"></div>
+
+  <script>
+    const quizData = [
+      {question: "How many users are currently part of the Mento ecosystem?", options:["1M+", "10M+", "25M+", "50M+"], answer:"10M+"},
+      {question: "How many stable assets does Mento currently support?", options:["5", "10", "15+", "25+"], answer:"15+"},
+      {question: "What is Mento’s annualized FX trading volume?", options:["$8B", "$12B", "$18B+", "$25B+"], answer:"$18B+"},
+      {question: "Which is NOT integrated with Mento?", options:["Chainlink", "Valora", "Wormhole", "PayPal"], answer:"PayPal"},
+      {question: "Which blockchain is Mento built on?", options:["Ethereum", "Celo", "Polygon", "Solana"], answer:"Celo"},
+      {question: "What is the primary token used in Mento?", options:["MENTO", "USDC", "DAI", "USDT"], answer:"MENTO"},
+      {question: "Which country’s currency is NOT supported by Mento stablecoins?", options:["Kenya", "Nigeria", "Brazil", "India"], answer:"India"},
+      {question: "What is the collateralization ratio seen in Mento's reserve?", options:["1.0", "1.5", "1.8", "2.0"], answer:"1.8"},
+      {question: "Which partner helps provide oracle price feeds to Mento?", options:["Chainlink", "Uniswap", "Coinbase", "Kraken"], answer:"Chainlink"},
+      {question: "Where can you find Mento’s reserve transparency data?", options:["mento.com/reserve", "reserve.mento.org", "mento.org/data", "mento.io/reserve"], answer:"reserve.mento.org"}
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+
+    quizData.forEach((item, index) => {
+      const block = document.createElement('div');
+      block.classList.add('question-block');
+
+      const questionEl = document.createElement('div');
+      questionEl.classList.add('question');
+      questionEl.innerText = `${index + 1}. ${item.question}`;
+
+      const optionsEl = document.createElement('div');
+      optionsEl.classList.add('options');
+
+      const resultEl = document.createElement('div');
+      resultEl.classList.add('result');
+
+      let answered = false;
+
+      item.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => {
+          if (answered) return; // prevent multiple answers
+          answered = true;
+
+          if(opt === item.answer) {
+            btn.classList.add('correct');
+            resultEl.innerText = "✅ Correct!";
+          } else {
+            btn.classList.add('wrong');
+            resultEl.innerText = `❌ Wrong! Correct answer is: ${item.answer}`;
+            // highlight correct answer button
+            Array.from(optionsEl.children).forEach(button => {
+              if(button.innerText === item.answer) button.classList.add('correct');
+            });
+          }
+          // disable all buttons after answer
+          Array.from(optionsEl.children).forEach(button => button.disabled = true);
+        };
+        optionsEl.appendChild(btn);
+      });
+
+      block.appendChild(questionEl);
+      block.appendChild(optionsEl);
+      block.appendChild(resultEl);
+
+      quizContainer.appendChild(block);
+    });
+  </script>
+  
+</body>
+</html>
