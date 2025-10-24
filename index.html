@@ -3,139 +3,183 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mento Quiz with Highlighted Answers</title>
+  <title>Mento Community Quiz</title>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #137dc5, #00cfc8);
       color: #fff;
       margin: 0;
-      padding: 20px 10px;
+      padding: 20px;
     }
     h1 {
       color: #FFF74F;
       text-align: center;
-      margin-bottom: 25px;
-      font-size: 2.5em;
+      font-size: 2.8em;
+      margin-bottom: 10px;
     }
     .quiz-container {
-      max-width: 700px;
+      max-width: 760px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 25px 30px;
+      background: rgba(255,255,255,0.1);
       border-radius: 15px;
-      backdrop-filter: blur(15px);
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      padding: 25px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
     }
     .question-block {
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       border-bottom: 1px solid rgba(255,255,255,0.3);
-      padding-bottom: 20px;
+      padding-bottom: 18px;
     }
     .question {
-      font-size: 1.25em;
+      font-size: 1.2em;
       font-weight: 600;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
     .options button {
       display: block;
       width: 100%;
       margin: 8px 0;
-      padding: 12px;
-      background-color: #FFF74F;
+      padding: 10px;
       border: none;
-      border-radius: 10px;
-      color: #000;
+      border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: 0.3s;
     }
-    .options button:hover {
-      background-color: #ffe145;
+    .options button:hover { background-color: #ffe145; }
+    .correct { background-color: #22c55e !important; color:#fff; }
+    .wrong { background-color: #ef4444 !important; color:#fff; }
+    .score-box {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 1.4em;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 12px;
     }
-    .options button.correct {
-      background-color: #22c55e; /* green */
-      color: white;
+    .socials {
+      margin: 25px auto;
+      text-align: center;
     }
-    .options button.wrong {
-      background-color: #ef4444; /* red */
-      color: white;
+    .socials img {
+      width: 45px;
+      margin: 0 10px;
+      border-radius: 50%;
+      background-color: #fff;
+      padding: 8px;
+      cursor: pointer;
+      transition: 0.3s;
     }
-    .result {
-      margin-top: 10px;
-      font-weight: 600;
+    .socials img:hover { transform: scale(1.1); }
+    .benefits {
+      max-width: 750px;
+      margin: 30px auto;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .benefits h2 {
+      color: #FFF74F;
+      font-size: 1.8em;
+      margin-bottom: 12px;
+    }
+    .benefits li {
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
 
   <h1>Mento Community Quiz</h1>
+  <h3 style="text-align:center;">Check your FX IQ & Join the Onchain Revolution 🌍</h3>
 
   <div class="quiz-container" id="quiz-container"></div>
 
+  <div id="score-box" class="score-box">Score: 0 / 10</div>
+
+  <div class="socials">
+    <a href="https://x.com/MentoLabs" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
+    <a href="https://discord.mento.org" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord"></a>
+    <a href="https://www.linkedin.com/company/mento-labs" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn"></a>
+    <a href="https://www.instagram.com/mento_team" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram"></a>
+    <a href="https://www.youtube.com/watch?v=nexL5KgSj5k" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube"></a>
+    <a href="https://www.mento.org" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/4257/4257483.png" alt="Website"></a>
+  </div>
+
+  <div class="benefits">
+    <h2>Why Join the Mento Ecosystem?</h2>
+    <ul>
+      <li>Access transparent stablecoin reserves at <a style="color:#FFF74F;" href="https://reserve.mento.org" target="_blank">reserve.mento.org</a>.</li>
+      <li>Participate in governance and growth as an early contributor.</li>
+      <li>Build your onchain identity with your FX ID Card on Discord.</li>
+      <li>Earn ecosystem rewards through active community participation.</li>
+      <li>Be part of the open FX Layer powering multi-currency DeFi across 140+ countries.</li>
+    </ul>
+  </div>
+
   <script>
     const quizData = [
-      {question: "How many users are currently part of the Mento ecosystem?", options:["1M+", "10M+", "25M+", "50M+"], answer:"10M+"},
-      {question: "How many stable assets does Mento currently support?", options:["5", "10", "15+", "25+"], answer:"15+"},
-      {question: "What is Mento’s annualized FX trading volume?", options:["$8B", "$12B", "$18B+", "$25B+"], answer:"$18B+"},
-      {question: "Which is NOT integrated with Mento?", options:["Chainlink", "Valora", "Wormhole", "PayPal"], answer:"PayPal"},
-      {question: "Which blockchain is Mento built on?", options:["Ethereum", "Celo", "Polygon", "Solana"], answer:"Celo"},
-      {question: "What is the primary token used in Mento?", options:["MENTO", "USDC", "DAI", "USDT"], answer:"MENTO"},
-      {question: "Which country’s currency is NOT supported by Mento stablecoins?", options:["Kenya", "Nigeria", "Brazil", "India"], answer:"India"},
-      {question: "What is the collateralization ratio seen in Mento's reserve?", options:["1.0", "1.5", "1.8", "2.0"], answer:"1.8"},
-      {question: "Which partner helps provide oracle price feeds to Mento?", options:["Chainlink", "Uniswap", "Coinbase", "Kraken"], answer:"Chainlink"},
-      {question: "Where can you find Mento’s reserve transparency data?", options:["mento.com/reserve", "reserve.mento.org", "mento.org/data", "mento.io/reserve"], answer:"reserve.mento.org"}
+      {q:"How many users are part of the Mento ecosystem?",opts:["1M+","10M+","25M+","50M+"],ans:"10M+"},
+      {q:"How many stable assets does Mento support?",opts:["5","10","15+","25+"],ans:"15+"},
+      {q:"Mento’s annualized FX volume?",opts:["$8B","$12B","$18B+","$25B+"],ans:"$18B+"},
+      {q:"Which is NOT integrated with Mento?",opts:["Chainlink","Valora","Wormhole","PayPal"],ans:"PayPal"},
+      {q:"Which blockchain powers Mento?",opts:["Ethereum","Celo","Polygon","Solana"],ans:"Celo"},
+      {q:"What is the main token for governance?",opts:["MENTO","USDT","cUSD","CELO"],ans:"MENTO"},
+      {q:"Which currency is NOT supported by Mento?",opts:["Nigeria","Brazil","India","Kenya"],ans:"India"},
+      {q:"Collateral ratio of Mento reserve?",opts:["1.0","1.5","1.8","2.0"],ans:"1.8"},
+      {q:"Which oracle provides price feeds?",opts:["Chainlink","Coinbase","Uniswap","Kraken"],ans:"Chainlink"},
+      {q:"Where to check reserve data?",opts:["mento.com/reserve","reserve.mento.org","mento.io","mento.org/data"],ans:"reserve.mento.org"}
     ];
 
-    const quizContainer = document.getElementById('quiz-container');
+    let score = 0;
+    const container = document.getElementById('quiz-container');
+    const scoreBox = document.getElementById('score-box');
 
-    quizData.forEach((item, index) => {
+    quizData.forEach((item, i) => {
       const block = document.createElement('div');
       block.classList.add('question-block');
 
-      const questionEl = document.createElement('div');
-      questionEl.classList.add('question');
-      questionEl.innerText = `${index + 1}. ${item.question}`;
+      const question = document.createElement('div');
+      question.classList.add('question');
+      question.innerText = (i+1) + ". " + item.q;
 
-      const optionsEl = document.createElement('div');
-      optionsEl.classList.add('options');
+      const options = document.createElement('div');
+      options.classList.add('options');
 
-      const resultEl = document.createElement('div');
-      resultEl.classList.add('result');
-
+      const result = document.createElement('div');
+      result.classList.add('result');
       let answered = false;
 
-      item.options.forEach(opt => {
+      item.opts.forEach(opt => {
         const btn = document.createElement('button');
         btn.innerText = opt;
         btn.onclick = () => {
-          if (answered) return; // prevent multiple answers
+          if(answered) return;
           answered = true;
-
-          if(opt === item.answer) {
+          if(opt === item.ans){
             btn.classList.add('correct');
-            resultEl.innerText = "✅ Correct!";
+            result.innerText = "✅ Correct!";
+            score++;
+            scoreBox.innerText = `Score: ${score} / ${quizData.length}`;
           } else {
             btn.classList.add('wrong');
-            resultEl.innerText = `❌ Wrong! Correct answer is: ${item.answer}`;
-            // highlight correct answer button
-            Array.from(optionsEl.children).forEach(button => {
-              if(button.innerText === item.answer) button.classList.add('correct');
+            result.innerText = `❌ Wrong! Correct: ${item.ans}`;
+            Array.from(options.children).forEach(b=>{
+              if(b.innerText===item.ans) b.classList.add('correct');
             });
           }
-          // disable all buttons after answer
-          Array.from(optionsEl.children).forEach(button => button.disabled = true);
+          Array.from(options.children).forEach(b=>b.disabled=true);
         };
-        optionsEl.appendChild(btn);
+        options.appendChild(btn);
       });
 
-      block.appendChild(questionEl);
-      block.appendChild(optionsEl);
-      block.appendChild(resultEl);
-
-      quizContainer.appendChild(block);
+      block.appendChild(question);
+      block.appendChild(options);
+      block.appendChild(result);
+      container.appendChild(block);
     });
   </script>
-  
 </body>
 </html>
+
